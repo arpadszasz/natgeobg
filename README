@@ -1,0 +1,23 @@
+natgeobg - National Geographic Background
+=========================================
+
+Description
+-----------
+Set GNOME background to National Geographics' "Picture of the Day" using
+Mojo::UserAgent.
+
+Usage
+-----
+- run manually:
+    perl ./natgeobg.pl
+
+- run from CRON (every 6 hours):
+    0 */6 * * *    $HOME/bin/natgeobg.pl 2>&1 > /dev/null
+
+Bugs
+----
+https://github.com/arpadszasz/natgeobg/issues
+
+Author
+------
+Árpád Szász <arpad.szasz@plenum.ro>
