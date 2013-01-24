@@ -6,6 +6,12 @@ Description
 Set GNOME background to National Geographics' "Picture of the Day" using
 Mojo::UserAgent.
 
+Install
+-------
+natgeobg.pl depends on Mojo::UserAgent from the Mojolicious the package.
+To install it run:
+    cpan Mojolicious
+
 Usage
 -----
 - run manually:
@@ -21,3 +27,10 @@ https://github.com/arpadszasz/natgeobg/issues
 Author
 ------
 Árpád Szász <arpad.szasz@plenum.ro>
+
+License
+-------
+(C) 2013
+
+This software is licensed using Artistic License 2.0
+(http://www.perlfoundation.org/artistic_license_2_0)
