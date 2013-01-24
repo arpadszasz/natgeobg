@@ -1,40 +1,48 @@
-natgeobg - National Geographic Background
-=========================================
+=pod
 
-Description
------------
+=encoding utf-8
+
+=head1 natgeobg - National Geographic Background
+
+=head1 Description
+
 Set GNOME background to National Geographics' "Picture of the Day" using
 Mojo::UserAgent.
 
-Install
--------
-natgeobg.pl depends on Mojo::UserAgent from the Mojolicious the package.
+=head1 Install
+
+C<natgeobg.pl> depends on L<Mojo::UserAgent> from the L<Mojolicious> package.
 To install it run:
+
     cpan Mojolicious
 
-Usage
------
+=head1 Usage
+
 - run manually:
+
     perl ./natgeobg.pl
 
 - run from CRON (every 6 hours):
+
     0 */6 * * *    $HOME/bin/natgeobg.pl 2>&1 > /dev/null
 
-Bugs
-----
-https://github.com/arpadszasz/natgeobg/issues
+=head1 Bugs
 
-Author
-------
+L<https://github.com/arpadszasz/natgeobg/issues>
+
+=head1 Author
+
 Árpád Szász <arpad.szasz@plenum.ro>
 
-Contributors
-------------
+=head1 Contributors
+
 Carlos Lima
 
-License
--------
+=head1 License
+
 (C) 2013
 
 This software is licensed using Artistic License 2.0
 (http://www.perlfoundation.org/artistic_license_2_0)
+
+=cut
