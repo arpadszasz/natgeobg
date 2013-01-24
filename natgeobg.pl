@@ -1,25 +1,22 @@
 #!/usr/bin/env perl
 
-use 5.10.1;
+use 5.010;
 use strict;
 use utf8;
 use warnings FATAL => 'all';
 use Mojo::UserAgent;
 
-my $url
-  = 'http://photography.nationalgeographic.com/photography/photo-of-the-day';
+my $base_path = '/tmp/';
+my $url =
+  'http://photography.nationalgeographic.com/photography/photo-of-the-day';
 
-my $ua = Mojo::UserAgent->new;
-my ( $picture_url, $picture_file_name )
-  = $ua->get($url)->res->dom('div.download_link a')
-  =~ /href="(.+\/(.+?\.jpg))"/;
+my $ua      = Mojo::UserAgent->new;
+my $img_url = $ua->get($url)->res->dom->at('div.download_link a')->{href};
 
-open( my $picture_fh, '>', '/tmp/' . $picture_file_name );
-binmode $picture_fh;
-print $picture_fh $ua->get($picture_url)->res->body;
-close $picture_fh;
+my $filename = $base_path . Mojo::Path->new($img_url)->parts->[-1];
+$ua->get($img_url)->res->content->asset->move_to($filename);
 
 system( 'gsettings set org.gnome.desktop.background'
-      . " picture-uri file:///tmp/$picture_file_name" );
+      . " picture-uri file://$filename" );
 
 exit 0;
