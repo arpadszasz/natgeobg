@@ -1,0 +1,24 @@
+# filename:    $HOME/.perltidyrc
+# author:      Árpád Szász <arpad.szasz@plenum.ro>
+# modified:    2010-10-31
+# description: Perl::Tidy resource file
+
+--nostandard-output
+--standard-error-output
+--backup-and-modify-in-place
+--force-read-binary
+--check-syntax
+--warning-output
+--maximum-line-length=78
+--indent-columns=4
+--continuation-indentation=2
+--nooutdent-labels
+--nospace-for-semicolon
+--maximum-consecutive-blank-lines=2
+--nooutdent-long-comments
+--opening-brace-always-on-right
+--opening-token-right
+--break-before-all-operators
+--noline-up-parentheses
+--indent-spaced-block-comments
+--break-at-old-comma-breakpoints

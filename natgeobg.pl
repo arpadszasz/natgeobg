@@ -7,8 +7,8 @@ use warnings FATAL => 'all';
 use Mojo::UserAgent;
 
 my $base_path = '/tmp/';
-my $url =
-  'http://photography.nationalgeographic.com/photography/photo-of-the-day';
+my $url
+  = 'http://photography.nationalgeographic.com/photography/photo-of-the-day';
 
 my $ua      = Mojo::UserAgent->new;
 my $img_url = $ua->get($url)->res->dom->at('div.download_link a')->{href};
@@ -27,16 +27,18 @@ sub set_wallpaper {
     given ($desk_env) {
         when (/gnome|unity/) {
             system(
-                'gsettings',                   'set',
+                'gsettings',                    'set',
                 'org.gnome.desktop.background', 'picture-uri',
                 "file://$filename"
             );
         }
         when ("xfce") {
-            system ( 'xfconf-query', '-c', 'xfce4-desktop', '-p', '/backdrop/screen0/monitor0/image-path', '-s', $filename);
+            system( 'xfconf-query', '-c', 'xfce4-desktop', '-p',
+                '/backdrop/screen0/monitor0/image-path', '-s', $filename );
         }
         default {
-            say "Your Desktop Environment ($desk_env) is not supported yet :-(";
+            say
+              "Your Desktop Environment ($desk_env) is not supported yet :-(";
             say "Regardless, your picture is saved at: $filename";
         }
     }
