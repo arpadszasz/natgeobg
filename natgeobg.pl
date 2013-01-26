@@ -27,7 +27,9 @@ sub set_wallpaper {
     my ($filename) = @_;
 
     my ($sysname) = uname();
-    my $desk_env = lc $sysname eq DARWIN ? DARWIN : lc $ENV{XDG_CURRENT_DESKTOP};
+    my $desk_env = lc $sysname eq DARWIN
+                 ? DARWIN
+                 : exists $ENV{XDG_CURRENT_DESKTOP} && lc $ENV{XDG_CURRENT_DESKTOP};
 
     given ($desk_env) {
         when (/gnome|unity/) {
