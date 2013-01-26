@@ -36,8 +36,13 @@ L<https://github.com/arpadszasz/natgeobg/issues>
 
 =head1 Contributors
 
-Carlos Lima
-Omid Houshyar 
+=over
+
+=item Carlos Lima
+
+=item Omid Houshyar 
+
+=back
 
 =head1 License
 
