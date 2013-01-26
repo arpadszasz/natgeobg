@@ -23,24 +23,44 @@ exit 0;
 sub set_wallpaper {
     my ($filename) = @_;
 
-    my $desk_env = lc $ENV{XDG_CURRENT_DESKTOP};
-    given ($desk_env) {
-        when (/gnome|unity/) {
-            system(
-                'gsettings',                    'set',
-                'org.gnome.desktop.background', 'picture-uri',
-                "file://$filename"
-            );
+    my $os_name = lc $^O;
+
+    given ($os_name) {
+        when (/darwin/) {
+            system("defaults write com.apple.desktop Background '{default = {ImageFilePath = $filename;};}'");
+            system("killall Dock");
         }
-        when ("xfce") {
-            system( 'xfconf-query', '-c', 'xfce4-desktop', '-p',
-                '/backdrop/screen0/monitor0/image-path', '-s', $filename );
+        when (/linux/) {
+            my $desk_env = lc $ENV{XDG_CURRENT_DESKTOP};
+            given ($desk_env) {
+                when (/gnome|unity/) {
+                    system(
+                        'gsettings',                    'set',
+                        'org.gnome.desktop.background', 'picture-uri',
+                        "file://$filename"
+                    );
+                }
+                when ("xfce") {
+                    system( 'xfconf-query', '-c', 'xfce4-desktop', '-p',
+                        '/backdrop/screen0/monitor0/image-path', '-s', $filename );
+                }
+                default {
+                    say
+                      "Your Desktop Environment ($desk_env) is not supported yet :-(";
+                    say "Regardless, your picture is saved at: $filename";
+                }
+            }    
+            default {
+                say "Your Desktop Environment ($desk_env) is not supported yet :-(";
+                say "Regardless, your picture is saved at: $filename";
+            }        
         }
         default {
-            say
-              "Your Desktop Environment ($desk_env) is not supported yet :-(";
+            say "Your operating system '$^O' is not supported yet :-(";
             say "Regardless, your picture is saved at: $filename";
         }
     }
+
+
     return;
 }
