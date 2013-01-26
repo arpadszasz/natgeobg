@@ -4,7 +4,10 @@ use 5.010;
 use strict;
 use utf8;
 use warnings FATAL => 'all';
+use POSIX qw( uname );
 use Mojo::UserAgent;
+
+use constant DARWIN => 'darwin';
 
 my $base_path = '/tmp/';
 my $url
@@ -23,7 +26,11 @@ exit 0;
 sub set_wallpaper {
     my ($filename) = @_;
 
-    my $desk_env = lc $ENV{XDG_CURRENT_DESKTOP};
+    my ($sysname) = uname();
+    my $desk_env = lc $sysname eq DARWIN
+                 ? DARWIN
+                 : exists $ENV{XDG_CURRENT_DESKTOP} && lc $ENV{XDG_CURRENT_DESKTOP};
+
     given ($desk_env) {
         when (/gnome|unity/) {
             system(
@@ -35,6 +42,11 @@ sub set_wallpaper {
         when ("xfce") {
             system( 'xfconf-query', '-c', 'xfce4-desktop', '-p',
                 '/backdrop/screen0/monitor0/image-path', '-s', $filename );
+        }
+        when (DARWIN) {
+            system( 'defaults', 'write', 'com.apple.desktop', 'Background',
+                qq({default = {ImageFilePath = "$filename"; };}) );
+            system( 'killall', 'Dock' );
         }
         default {
             say
