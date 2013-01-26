@@ -27,9 +27,10 @@ sub set_wallpaper {
     my ($filename) = @_;
 
     my ($sysname) = uname();
-    my $desk_env = lc $sysname eq DARWIN
-                 ? DARWIN
-                 : exists $ENV{XDG_CURRENT_DESKTOP} && lc $ENV{XDG_CURRENT_DESKTOP};
+    my $desk_env
+      = lc $sysname eq DARWIN
+      ? DARWIN
+      : exists $ENV{XDG_CURRENT_DESKTOP} && lc $ENV{XDG_CURRENT_DESKTOP};
 
     given ($desk_env) {
         when (/gnome|unity/) {
@@ -40,12 +41,16 @@ sub set_wallpaper {
             );
         }
         when ("xfce") {
-            system( 'xfconf-query', '-c', 'xfce4-desktop', '-p',
-                '/backdrop/screen0/monitor0/image-path', '-s', $filename );
+            system(
+                'xfconf-query', '-c', 'xfce4-desktop', '-p',
+                '/backdrop/screen0/monitor0/image-path', '-s', $filename
+            );
         }
         when (DARWIN) {
-            system( 'defaults', 'write', 'com.apple.desktop', 'Background',
-                qq({default = {ImageFilePath = "$filename"; };}) );
+            system(
+                'defaults', 'write', 'com.apple.desktop', 'Background',
+                qq({default = {ImageFilePath = "$filename"; };})
+            );
             system( 'killall', 'Dock' );
         }
         default {
