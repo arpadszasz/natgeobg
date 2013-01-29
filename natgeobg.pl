@@ -13,8 +13,16 @@ my $base_path = '/tmp/';
 my $url
   = 'http://photography.nationalgeographic.com/photography/photo-of-the-day';
 
-my $ua      = Mojo::UserAgent->new;
-my $img_url = $ua->get($url)->res->dom->at('div.download_link a')->{href};
+my $ua = Mojo::UserAgent->new;
+
+my $img_url;
+if ( $ua->get($url)->res->dom->at('div.download_link a') ) {
+    $img_url = $ua->get($url)->res->dom->at('div.download_link a')->{href};
+}
+else {
+    # use image preview if there's no link to a higher resolution image
+    $img_url = $ua->get($url)->res->dom->at('div.primary_photo a img')->{src};
+}
 
 my $filename = $base_path . Mojo::Path->new($img_url)->parts->[-1];
 $ua->get($img_url)->res->content->asset->move_to($filename);
