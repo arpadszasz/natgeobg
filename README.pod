@@ -42,6 +42,8 @@ L<https://github.com/arpadszasz/natgeobg/issues>
 
 =item Omid Houshyar 
 
+=item Nikolay Aviltsev
+
 =back
 
 =head1 License
