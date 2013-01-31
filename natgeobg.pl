@@ -34,38 +34,44 @@ exit 0;
 sub set_wallpaper {
     my ($filename) = @_;
 
-    my ($sysname) = uname();
-    my $desk_env
-      = lc $sysname eq DARWIN
-      ? DARWIN
-      : exists $ENV{XDG_CURRENT_DESKTOP} && lc $ENV{XDG_CURRENT_DESKTOP};
+    my $os_name = lc $^O;
 
-    given ($desk_env) {
-        when (/gnome|unity/) {
-            system(
-                'gsettings',                    'set',
-                'org.gnome.desktop.background', 'picture-uri',
-                "file://$filename"
-            );
+    given ($os_name) {
+        when (/darwin/) {
+            system("defaults write com.apple.desktop Background '{default = {ImageFilePath = $filename;};}'");
+            system("killall Dock");
         }
-        when ("xfce") {
-            system(
-                'xfconf-query', '-c', 'xfce4-desktop', '-p',
-                '/backdrop/screen0/monitor0/image-path', '-s', $filename
-            );
-        }
-        when (DARWIN) {
-            system(
-                'defaults', 'write', 'com.apple.desktop', 'Background',
-                qq({default = {ImageFilePath = "$filename"; };})
-            );
-            system( 'killall', 'Dock' );
+        when (/linux/) {
+            my $desk_env = lc $ENV{XDG_CURRENT_DESKTOP};
+            given ($desk_env) {
+                when (/gnome|unity/) {
+                    system(
+                        'gsettings',                    'set',
+                        'org.gnome.desktop.background', 'picture-uri',
+                        "file://$filename"
+                    );
+                }
+                when ("xfce") {
+                    system( 'xfconf-query', '-c', 'xfce4-desktop', '-p',
+                        '/backdrop/screen0/monitor0/image-path', '-s', $filename );
+                }
+                default {
+                    say
+                      "Your Desktop Environment ($desk_env) is not supported yet :-(";
+                    say "Regardless, your picture is saved at: $filename";
+                }
+            }    
+            default {
+                say "Your Desktop Environment ($desk_env) is not supported yet :-(";
+                say "Regardless, your picture is saved at: $filename";
+            }        
         }
         default {
-            say
-              "Your Desktop Environment ($desk_env) is not supported yet :-(";
+            say "Your operating system '$^O' is not supported yet :-(";
             say "Regardless, your picture is saved at: $filename";
         }
     }
+
+
     return;
 }
