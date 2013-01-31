@@ -61,10 +61,6 @@ sub set_wallpaper {
                     say "Regardless, your picture is saved at: $filename";
                 }
             }    
-            default {
-                say "Your Desktop Environment ($desk_env) is not supported yet :-(";
-                say "Regardless, your picture is saved at: $filename";
-            }        
         }
         default {
             say "Your operating system '$^O' is not supported yet :-(";
